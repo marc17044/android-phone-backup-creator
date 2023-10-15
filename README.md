@@ -1,2 +1,4 @@
 # android-phone-backup-creator
-This python program take the peramitors of a starting dirictory and creates a 'phone_backup' directory with a copy of all information sorted into its respective file extention. 
+This Python program, contained within a single local Python file, takes parameters for a starting directory and generates a 'phone_backup' directory. 
+It performs file copying and organization according to their respective file extensions. 
+The code is built upon a custom recursive algorithm, making it particularly valuable for backing up phone data onto a computer.
