@@ -5,3 +5,4 @@ The code is built upon a custom recursive algorithm, making it particularly valu
 
 # problems
 sometimes the GUI disappears during process, but code is still exicuting.
+GUI will pop back up once process is done.
