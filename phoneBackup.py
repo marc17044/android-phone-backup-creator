@@ -55,7 +55,8 @@ def mainrun(device_directory,phone_backup_dir):
             win.update()
         except:
             print("NOT EMPTY", layer[i])
-
+    lab.configure(text="done!")
+    win.update()
 #get vars---
 def step1():#sets device_directory
     window = tk.Tk(className = "1 of 2")
