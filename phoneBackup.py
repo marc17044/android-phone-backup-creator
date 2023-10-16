@@ -1,10 +1,13 @@
 import os#for list dirs
 import pathlib#for extintions
 import shutil#copy files
-import time#check time
 import tkinter as tk#gui
-def mainrun(device_directory,phone_backup_dir):#everything is ready
-    start = time.time()
+from tkinter.ttk import *
+from tkinter import *
+
+#everything is ready---
+def mainrun(device_directory,phone_backup_dir):
+    print("test")
     failed = []
     phone_backup_dir += "/phone_backup"
     try:
@@ -13,10 +16,8 @@ def mainrun(device_directory,phone_backup_dir):#everything is ready
         os.mkdir(phone_backup_dir)
 
     def search(p):
-        #currentValues.configure(text=p)
+        
         try:
-            mid = time.time()
-            print(int(mid-start), "seconds")
             layer = os.listdir(p)#list
             layer_dirs = []
             #sort dirs and files
@@ -29,6 +30,8 @@ def mainrun(device_directory,phone_backup_dir):#everything is ready
                     pass
                 file_in_path = p+"/"+layer[i]
                 if os.path.isfile(file_in_path):
+                    lab.configure(text="Copying: "+file_in_path)
+                    win.update()
                     shutil.copy(file_in_path,phone_backup_dir+"/"+file_extension)
                 else:
                     layer_dirs.append(layer[i])
@@ -48,17 +51,16 @@ def mainrun(device_directory,phone_backup_dir):#everything is ready
         try:
             os.rmdir(phone_backup_dir+"/"+layer[i])
             i -= 1
+            lab.configure(text="Empty: "+phone_backup_dir+"/"+layer[i])
+            win.update()
         except:
             print("NOT EMPTY", layer[i])
 
-    end = time.time()
-    total = end-start
-    print(total/60," minutes")
-#get vars
+#get vars---
 def step1():#sets device_directory
     window = tk.Tk(className = "1 of 2")
     label = tk.Label(text="Device Directory")
-    frame = tk.Frame(height=50,width=600)
+    frame = tk.Frame(height=100,width=1000)
     entry = tk.Entry(fg="black", bg="white", width=50)
     text = tk.Label(
         text="""Input the top of the directory tree of device (as it will look like in your file explorer)
@@ -87,11 +89,10 @@ def step1():#sets device_directory
     text.pack()
     button.pack()
     window.mainloop()
-step1()
 def step2():#sets phone_backup_dir
     window = tk.Tk(className = "2 of 2")
     label = tk.Label(text="directory of copy folder end location ")
-    frame = tk.Frame(height=50,width=600)
+    frame = tk.Frame(height=100,width=1000)
     entry = tk.Entry(fg="black", bg="white", width=50)
     text = tk.Label(
         text="""Input the location where you would like the main folder to be created
@@ -119,17 +120,24 @@ def step2():#sets phone_backup_dir
     text.pack()
     button.pack()
     window.mainloop()
-step2()
+
+#final window---
 def step3():
-    window = tk.Tk(className = "working")
-    label = tk.Label(text="file is working...\n\n\n")
-    frame = tk.Frame(height=50,width=600)
-    global currentValues
-    currentValues = tk.Label(text = "default")
-    currentValues.configure(text="New value")
+
+    global win,lab
+    win = tk.Tk(className = "working")
+    #l1 = tk.Label(text="\n\n\n")
+    l2 = tk.Label(text="\n\n\nKill by killing terminal")
+    lab = tk.Label(text="press any key to start")#textvariable=status)
+    
+    def task_2(event):
+        print("triggered")
+        win.unbind('<Key>',run)
+        lab.configure(text="running")
+        win.update()
+        mainrun(device_directory,phone_backup_dir)
 
     def callback():
-        #window.destroy()
         exit(1)
 
     button = tk.Button(
@@ -140,18 +148,15 @@ def step3():
         activeforeground = "white",
         command= callback
     )
-    
+    frame = tk.Frame(height=100,width=1000)
+    run = win.bind('<Key>',task_2)
+
+        
     frame.pack()
-    label.pack()
-    button.pack()
-#########################################
-    try:
-        mainrun(device_directory,phone_backup_dir)
-        label.configure(text="done!\n")
-        button.configure(text="close",activebackground="green")
-    except:
-        label.configure(text="Fail!\n")
-    window.mainloop()
+    lab.pack()
+    l2.pack()    
+    mainloop()
 
+step1()
+step2()
 step3()
-
